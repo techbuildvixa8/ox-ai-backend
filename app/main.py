@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import requests
 
 from app.routes.health import router as health_router
 
@@ -33,6 +34,24 @@ class ChatRequest(BaseModel):
 
 @app.post("/chat")
 def chat(request: ChatRequest):
-    return {
-        "response": f"Received: {request.message}"
-    }
+    try:
+        response = requests.post(
+            "http://localhost:11434/api/generate",
+            json={
+                "model": "HammerAI/llama-3-lexi-uncensored:8b-q5_K_M",
+                "prompt": request.message,
+                "stream": False
+            },
+            timeout=120
+        )
+
+        data = response.json()
+
+        return {
+            "response": data["response"]
+        }
+
+    except Exception as e:
+        return {
+            "response": f"Error: {str(e)}"
+        }

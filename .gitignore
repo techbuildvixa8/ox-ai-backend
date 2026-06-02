@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtualenv (should NOT be committed; a previously committed venv/ must be
+# removed from the index in a follow-up: `git rm -r --cached venv`).
+venv/
+.venv/
+
+# Local SQLite database
+*.db
+ox_ai.db
+
+# Environment
+.env
